@@ -89,4 +89,11 @@ export class UsersService {
     return { message: "User deleted successfully" }
   }
 
+  async updateRefreshToken(userId: string, refreshToken: string | null) {
+    return this.prisma.user.update({
+      where: { id: userId },
+      data: { refreshToken },
+    });
+  }
+
 }
