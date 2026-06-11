@@ -47,6 +47,7 @@ model Patient {
   phone        String?
 
   appointments   Appointment[]
+  observations   Observation[]
 
   createdAt    DateTime   @default(now())
   updatedAt    DateTime   @updatedAt
@@ -75,4 +76,28 @@ model Appointment {
 
   createdAt   DateTime  @default(now())
   updatedAt   DateTime  @updatedAt
+}
+
+
+enum ObservationStatus {
+  FINAL
+  PRELIMINARY
+  CANCELLED
+}
+
+model Observation {
+  id        String     @id  @default(uuid())
+
+  patientId   String
+  patient   Patient  @relation(fields: [patientId], references: [id], onDelete: Cascade)
+
+  code      String
+  value     String
+  unit      String?
+  status    ObservationStatus   @default(FINAL)
+
+  observedAt   DateTime
+
+  createdAt    DateTime    @default(now())
+  updatedAt    DateTime    @updatedAt
 }

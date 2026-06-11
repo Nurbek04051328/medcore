@@ -3,6 +3,8 @@ import { PrismaService } from 'src/prisma/prisma.service';
 import { CreatePatientDto } from '../dto/create-patient.dto';
 import { toFhirPatient } from '../fhir/patient.fhir';
 import { UpdatePatientDto } from '../dto/update-patient.dto';
+import { toFhirAppointment } from 'src/appointments/fhir/appointment.fhir';
+import { toFhirObservation } from 'src/observations/fhir/observation.fhir';
 
 @Injectable()
 export class PatientsService {
@@ -59,6 +61,65 @@ export class PatientsService {
 
     return {
       message: "Patient deleted succesfully",
+    };
+  }
+
+  async getMedicalHistory(id: string) {
+    const patient = await this.prisma.patient.findUnique({
+      where: { id },
+      include: {
+        appointments: {
+          orderBy: {
+            startTime: 'desc'
+          },
+          include: {
+            doctor: {
+              select: {
+                id: true,
+                email: true,
+                role: true,
+              },
+            },
+          },
+        },
+        observations: {
+          orderBy: {
+            observedAt: 'desc',
+          },
+        },
+      },
+    });
+
+    if(!patient) {
+      throw new NotFoundException("Patient not found");
+    }
+
+    return patient;
+  }
+
+  async getMedicalHistoryFhir(id: string) {
+    const patient = await this.getMedicalHistory(id);
+
+    return {
+      resourceType: "Bundle",
+      type: 'collection',
+      entry: [
+        {
+          resource: toFhirPatient(patient),
+        },
+        ...patient.appointments.map((appointment) => ({
+          resource: toFhirAppointment({
+            ...appointment,
+            patient,
+          }),
+        })),
+        ...patient.observations.map((observation) => ({
+          resource: toFhirObservation({
+            ...observation,
+            patient,
+          }),
+        })),
+      ],
     };
   }
 }

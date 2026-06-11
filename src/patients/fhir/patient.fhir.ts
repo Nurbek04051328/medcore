@@ -12,7 +12,7 @@ export function toFhirPatient(patient: Patient) {
       },
     ],
     gender: mapgenderToThir(patient.gender),
-    birthDate: patient.birthDate.toDateString().split('T')[0],
+    birthDate: patient.birthDate.toISOString().split('T')[0],
     telecom: patient.phone
       ? [
         {

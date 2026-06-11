@@ -24,6 +24,16 @@ export class PatientsController {
     return this.patientsService.findOneFhir(id);
   }
 
+  @Get(':id/medical-history')
+  getMedicalHistory(@Param('id') id: string) {
+    return this.patientsService.getMedicalHistory(id);
+  }
+
+  @Get(':id/medical-history/fhir')
+  getMedicalHistoryFhir(@Param('id') id: string) {
+    return this.patientsService.getMedicalHistoryFhir(id);
+  }
+
   @Get(':id')
   findOne(@Param('id') id: string) {
     return this.patientsService.findOne(id);
