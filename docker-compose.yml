@@ -16,6 +16,18 @@ services:
 
     volumes:
       - postgres_data:/var/lib/postgresql/data
+  api:
+    build: .
+    container_name: medcore-api
+    restart: always
+    ports: 
+      - "3000:3000"
+    environment:
+      DATABASE_URL: postgresql://postgres:postgres@postgres:5432/medcore
+      JWT_SECRET: super-secret-key
+      PORT: 3000
+    depends_on:
+      - postgres
 
 volumes:
   postgres_data: {}

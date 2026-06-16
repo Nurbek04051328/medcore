@@ -8,6 +8,7 @@ import { AuthModule } from './auth/auth.module';
 import { PatientsModule } from './patients/patients.module';
 import { AppointmentsModule } from './appointments/appointments.module';
 import { ObservationsModule } from './observations/observations.module';
+import { HealthModule } from './health/health.module';
 
 @Module({
   imports: [
@@ -19,7 +20,8 @@ import { ObservationsModule } from './observations/observations.module';
     UsersModule,
     PatientsModule,
     AppointmentsModule,
-    ObservationsModule
+    ObservationsModule,
+    HealthModule,
   ],
   controllers: [AppController],
   providers: [AppService],

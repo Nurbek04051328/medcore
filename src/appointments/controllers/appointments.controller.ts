@@ -5,8 +5,11 @@ import { CreateAppointmentDto } from "../dto/create-appointment.dto";
 import { UpdateAppointmentStatusDto } from "../dto/update-appointment-status.dto";
 import { AppointmentStatus } from "@prisma/client";
 import { DoctorScheduleQueryDto } from "../dto/doctor-schedule-query.dto";
+import { ApiBearerAuth, ApiTags } from "@nestjs/swagger";
 
 
+@ApiTags('Appointments')
+@ApiBearerAuth()
 @Controller('appointments')
 @UseGuards(JwtAuthGuard)
 export class AppointmentsController {

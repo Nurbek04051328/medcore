@@ -2,8 +2,10 @@ import { Body, Controller, Get, Param, Post, UseGuards } from "@nestjs/common";
 import { JwtAuthGuard } from "src/auth/guards/jwt-auth.guard";
 import { ObservationsService } from "../services/observations.service";
 import { CreateObservationDto } from "../dto/create-observation.dto";
+import { ApiBearerAuth, ApiTags } from "@nestjs/swagger";
 
-
+@ApiTags('Observations')
+@ApiBearerAuth()
 @Controller('observations')
 @UseGuards(JwtAuthGuard)
 export class ObservationsController {
